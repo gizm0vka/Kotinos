@@ -50,7 +50,7 @@ function projectVertexNormal(patch, a=1) =
       : patch[i][j]+C[min(i,1)][min(j,1)]]
     ];//take vector list and apply 
 
-module bezSheetStitching (patch, normal_thickness=1, tangent_thickness=1, splinesteps=splineSize, Preview=false) {
+module bezSheetStitching (patch, normal_thickness=1, tangent_thickness=1, splinesteps, Preview=false) {
   l_row=len(patch);
   l_col=len(patch[0]);
   
@@ -95,7 +95,7 @@ function EdgePatching (Patch) = [for(n=count(Patch))
                                     Patch[n][m]
                                   ]]; 
 
- module PatchPaddle (Patch=ThumbPatch, debug =false, thick=1.5 ) {
+ module PatchPaddle (Patch, debug =false, thick=1.5 ) {
   PaddlePatch = EdgePatching(Patch);
   splineSize = 24;
   bezSheetStitching(patch = PaddlePatch, normal_thickness=thick, tangent_thickness=1, splinesteps=splineSize, Preview=debug);
