@@ -3,71 +3,74 @@
 
 /*Critical Parameters*/
   //pseudo metacarpal origin [x,y,z] translation in mm, extrapolate metacarpal to carpal wrist joint (set global origin as middle carpal base) 
-  origin_thumb_carpal_base  =  [-25,-15,-15]; 
-  origin_index_carpal_base  =  [-16,0,-2]; 
+  origin_thumb_carpal_base  =  [-50,-2,-23]; 
+  origin_index_carpal_base  =  [-24,0,-2.7]; 
   origin_middle_carpal_base =  [0,0,0]; 
-  origin_ring_carpal_base   =  [17,0,-3]; 
-  origin_pinky_carpal_base  =  [31,0,-6];
+  origin_ring_carpal_base   =  [15,0,-3]; 
+  origin_pinky_carpal_base  =  [25.17,0,-6];
 
   //Digit Lengths
   //Pseudo Metacarpal Length: Dorsal side base of wrist to knuckle, ignore carpals 
-  length_thumb_metacarpal  = 53; //mm
-  length_index_metacarpal  = 65; //mm
-  length_middle_metacarpal = 70; //mm
-  length_ring_metacarpal   = 68; //mm
-  length_pinky_metacarpal  = 59; //mm
+  length_thumb_metacarpal  = 54; //mm
+  length_index_metacarpal  = 80.74; //mm
+  length_middle_metacarpal = 84.51; //mm
+  length_ring_metacarpal   = 83; //mm
+  length_pinky_metacarpal  = 67; //mm
 
   //Proximal Phalanges Length: Dorsal side knuckle to proximal-middle interphalangeal joint  
-  length_thumb_proximal  = 35; //mm
-  length_index_proximal  = 47; //mm
-  length_middle_proximal = 52; //mm
-  length_ring_proximal   = 45; //mm
-  length_pinky_proximal  = 36; //mm
+  length_thumb_proximal  = 38.51; //mm
+  length_index_proximal  = 56.04; //mm
+  length_middle_proximal = 61.30; //mm
+  length_ring_proximal   = 56.43; //mm
+  length_pinky_proximal  = 46.66; //mm
 
   //Middle Phalanges Length: Dorsal side proximal to distal interphalangeal joint
-  length_thumb_distal  = 29; //mm
-  length_index_middle  = 28; //mm
-  length_middle_middle = 31; //mm
-  length_ring_middle   = 28; //mm
-  length_pinky_middle  = 21; //mm
+  length_thumb_distal  = 33.33; //mm
+  length_index_middle  = 34.11; //mm
+  length_middle_middle = 37.92; //mm
+  length_ring_middle   = 37.9; //mm
+  length_pinky_middle  = 27.96; //mm
 
   //Proximal Phalanges Length: Dorsal side distal joint to the tip of finger 
-  length_index_distal  = 23; //mm
-  length_middle_distal = 24; //mm
-  length_ring_distal   = 26; //mm
-  length_pinky_distal  = 20; //mm
+  length_index_distal  = 23.69; //mm
+  length_middle_distal = 29.02; //mm
+  length_ring_distal   = 25.78; //mm
+  length_pinky_distal  = 22.31; //mm
 
 //Flexion Angles [pitch, roll, yaw] in degrees 
   //Thumb 
-  thumb_metacarpal = [-14, -80, 42.75]; 
-  thumb_proximal   = [-25, 0, 0];
-  thumb_distal     = [-10, 0, 0];
-  thumb_adduction  = [0,0,-22]; 
+  thumb_metacarpal = [-14, -100, 42.75]; 
+  thumb_proximal   = [-15, 0, 0];
+  thumb_distal     = [-15, 0, 0];
+  thumb_adduction  = [0,0,-30]; 
+
+    adj = 10;
+    roll_adj = -5;
 
   //Index 
 //  index_metacarpal = [ -1, 0, 3]; 
 //  index_proximal   = [-24, 0, 6];
-//  index_middle     = [-42, 0, 0];
-//  index_distal     = [-25, 0, 0];
-  index_metacarpal = [ -1, 0, 4]; 
-  index_proximal   = [-37, 0, 6];
-  index_middle     = [-25, 0, 0];
-  index_distal     = [-16, 0, 0];
+//  index_middle     = [-35, 0, 0];
+//  index_distal     = [-20, 0, 0];
+  index_metacarpal = [ -2, 0, 6]; 
+  index_proximal   = [-30, -8, 5];
+  index_middle     = [-35+adj, 5+roll_adj, 0];
+  index_distal     = [-25, 10, 0];
   //Middle 
-  middle_metacarpal = [  0, 0, 0];
-  middle_proximal   = [-40, 0, 0];
-  middle_middle     = [-30, 5, 0];
-  middle_distal     = [-13, 0, 0];
+  middle_metacarpal = [  0, 3, 1];
+  middle_proximal   = [-40, 0, 2];
+  middle_middle     = [-25+adj, 5+roll_adj, 0];
+  middle_distal     = [-20, 10, 0];
   //Ring
-  ring_metacarpal = [ -2,  2,-5]; 
-  ring_proximal   = [-30,  0, 1];
-  ring_middle     = [-40,  5, 0];
-  ring_distal     = [-15, 10, 0];
+  ring_metacarpal = [ -3,  5, -5]; 
+  ring_proximal   = [-24,  3, 0];
+  ring_middle     = [-35,  15-adj, 0];
+  ring_distal     = [-40, 20-adj, 0];
   //Pinky
-  pinky_metacarpal = [ -6, 10,-10]; 
-  pinky_proximal   = [-27,  0, -1];
-  pinky_middle     = [-36,  5,  3];
-  pinky_distal     = [-14, 10,  0];
+  pinky_metacarpal = [ -11, 0,-10]; 
+  pinky_proximal   = [-18,  0, -1];
+  pinky_middle     = [-10,  5,  3];
+  pinky_distal     = [-5, 10,  0];
   
 /*END of Critical Parameters*/
          
