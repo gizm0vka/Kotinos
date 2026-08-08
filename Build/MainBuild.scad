@@ -72,9 +72,9 @@ function pinky_skate (v=[0,0,0]) =[vector_to_origin(vector_to_pinky_tip)[0],vect
 $fn=32; //number of segments on curves, set lower for faster render, higher for more res
 
 BuildSupport();
-BuildThumb(cut=false);
-BuildRing(cut=false);
-BuildPinky(cut=false);
+BuildThumb(cut= ($preview ? false : true));
+BuildRing(cut= ($preview ? false : true));
+BuildPinky(cut= ($preview ? false : true));
 %HSK_PCBS();
 %BuildIndexPaddles();
 //%back(23)down(0)right(1)mouseOrigin()color("gold", alpha=.5)let(A_hand = GripHandFlexion)HandsOn(meat= true, A_hand); //hand reference at flexed position 
