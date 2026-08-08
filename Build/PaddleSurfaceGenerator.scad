@@ -54,9 +54,9 @@ module bezSheetStitching (patch, normal_thickness=1, tangent_thickness=1, spline
   l_row=len(patch);
   l_col=len(patch[0]);
   
-  TopNormalPatch = projectVertexNormal(patch, a=normal_thickness);
-  BottomTangentPatch = tangentPerimeter(patch,tangent_thickness);
-  TopTangentPatch = tangentPerimeter(projectVertexNormal(patch, a=normal_thickness),tangent_thickness);
+  TopNormalPatch = projectVertexNormal(patch = patch, a=normal_thickness);
+  BottomTangentPatch = tangentPerimeter(Mat = patch, a = tangent_thickness);
+  TopTangentPatch = tangentPerimeter(projectVertexNormal(patch = patch, a=normal_thickness),tangent_thickness);
   
   patchPerimeterEdge = let(ct=l_col, st=0 )[select(matrixPerimeter(patch), count(ct,st)),select(BottomTangentPatch, count(ct,st)),select(TopTangentPatch, count(ct,st)),select(matrixPerimeter(TopNormalPatch), count(ct,st))];
   patchPerimeterEdge2 = let(ct=l_row, st=l_col-1)[select(matrixPerimeter(patch), count(ct,st)),select(BottomTangentPatch, count(ct,st)),select(TopTangentPatch, count(ct,st)),select(matrixPerimeter(TopNormalPatch), count(ct,st))];  
@@ -71,12 +71,12 @@ module bezSheetStitching (patch, normal_thickness=1, tangent_thickness=1, spline
   } else {
    vnf_polyhedron(
       vnf_join(
-           [bezier_vnf(patches=bezier_patch_reverse(patch), splinesteps),
-            bezier_vnf(patches=[patchPerimeterEdge],  splinesteps),
-            bezier_vnf(patches=[patchPerimeterEdge2], splinesteps),
-            bezier_vnf(patches=[patchPerimeterEdge3], splinesteps),
-            bezier_vnf(patches=[patchPerimeterEdge4], splinesteps),
-            bezier_vnf(patches=[TopNormalPatch], splinesteps)]
+           [bezier_vnf(patches=bezier_patch_reverse(patch), splinesteps=splinesteps),
+            bezier_vnf(patches=[patchPerimeterEdge],  splinesteps=splinesteps),
+            bezier_vnf(patches=[patchPerimeterEdge2], splinesteps=splinesteps),
+            bezier_vnf(patches=[patchPerimeterEdge3], splinesteps=splinesteps),
+            bezier_vnf(patches=[patchPerimeterEdge4], splinesteps=splinesteps),
+            bezier_vnf(patches=[TopNormalPatch], splinesteps=splinesteps)]
       )
    );
  }
@@ -98,6 +98,6 @@ function EdgePatching (Patch) = [for(n=count(Patch))
  module PatchPaddle (Patch=ThumbPatch, debug =false, thick=1.5 ) {
   PaddlePatch = EdgePatching(Patch);
   splineSize = 24;
-  bezSheetStitching(PaddlePatch, normal_thickness=thick, tangent_thickness=1, splinesteps=splineSize, Preview=debug);
+  bezSheetStitching(patch = PaddlePatch, normal_thickness=thick, tangent_thickness=1, splinesteps=splineSize, Preview=debug);
  }
  

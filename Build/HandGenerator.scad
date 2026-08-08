@@ -14,8 +14,8 @@ step= 32;
 res= 64;
 
 
-module PlaceOn (finger= 0, phalange = 0, A_hand = A_hand) { //place scad object along finger trajectory 
 
+module PlaceOn (finger= 0, phalange = 0, A_hand = NeutralHandFlexion) { //place scad object along finger trajectory 
  R_hand = [ A_hand[finger][dis][2],0,0,0,0]; // Thumb  
  translate(W_hand[finger])xrot(R_hand[finger])rotate(A_hand[finger][0])translate([0,Len_hand[finger][0],0]){
    if(phalange >= 1)rotate(A_hand[finger][1])translate([0,Len_hand[finger][1],0]){//proxi phalange
@@ -28,7 +28,7 @@ module PlaceOn (finger= 0, phalange = 0, A_hand = A_hand) { //place scad object 
    }
 }      
   
-function PlaceOnVec (finger= 0, phalange = 0, A_hand = A_hand, vec = [0,0,0]) = //vector to PlaceOn Module
+function PlaceOnVec (finger= 0, phalange = 0, A_hand = NeutralHandFlexion, vec = [0,0,0]) = //vector to PlaceOn Module
 
  let(R_hand = [A_hand[finger][dis][2],0,0,0,0])// Thumb  
  move(W_hand[finger], rot([R_hand[finger],0,0], p=rot(A_hand[finger][0], p=move([0,Len_hand[finger][0],0],
@@ -37,7 +37,7 @@ function PlaceOnVec (finger= 0, phalange = 0, A_hand = A_hand, vec = [0,0,0]) = 
             phalange>=3 ? rot(A_hand[finger][3], p= move([0,Len_hand[finger][3],0], vec)) : vec)) : vec)) : vec
   )))); 
  
-function PlaceOnOrient (finger= 0, phalange = 0, A_hand = A_hand, vec=[0,0,0]) = //angular cal to PlaceOn Module child
+function PlaceOnOrient (finger= 0, phalange = 0, A_hand = NeutralHandFlexion, vec=[0,0,0]) = //angular cal to PlaceOn Module child
 
  let(R_hand = [A_hand[finger][dis][2],0,0,0,0])// Thumb  
   rot([R_hand[finger],0,0], p= rot(A_hand[finger][0], p = 
@@ -47,7 +47,7 @@ function PlaceOnOrient (finger= 0, phalange = 0, A_hand = A_hand, vec=[0,0,0]) =
   ));
   
 
-module HandsOn(meat = true, A_hand=A_hand) {// flexion rotation axis set to knuckle side as it should
+module HandsOn(meat = true, A_hand=NeutralHandFlexion) {// flexion rotation axis set to knuckle side as it should
 
   meta= 0; prox = 1; medi = 2; dist = 3;
   module fingerJoint(i,j, sc=1) {scale([Finger_width[i][j],1,Finger_diam[i][j]])rotate([90,30,0])cylinder(r=1,.1,$fn=16);}
@@ -78,109 +78,109 @@ module HandsOn(meat = true, A_hand=A_hand) {// flexion rotation axis set to knuc
  
    for (i = [0:len(Len_hand)-1]){
      //Finger Generation
-     let(j=meta)color("Turquoise")PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j]/2,-1])xrot(90)zrot(90)cyl(r=1,Len_hand[i][j],$fn=3);
-     let(j=prox)color("DodgerBlue")PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j]/2,-1])xrot(90)zrot(90)cyl(r=1,Len_hand[i][j],$fn=3);
-     let(j=medi)color("RoyalBlue")PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j]/2,-1])xrot(90)zrot(90)cyl(r=1,Len_hand[i][j],$fn=3);
-     if(i>thu)let(j=dist)color("MidnightBlue")PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j]/2,-1])xrot(90)zrot(90)cyl(r=1,Len_hand[i][j],$fn=3);
+     let(j=meta)color("Turquoise")PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j]/2,-1])xrot(90)zrot(90)cyl(r=1,Len_hand[i][j],$fn=3);
+     let(j=prox)color("DodgerBlue")PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j]/2,-1])xrot(90)zrot(90)cyl(r=1,Len_hand[i][j],$fn=3);
+     let(j=medi)color("RoyalBlue")PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j]/2,-1])xrot(90)zrot(90)cyl(r=1,Len_hand[i][j],$fn=3);
+     if(i>thu)let(j=dist)color("MidnightBlue")PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j]/2,-1])xrot(90)zrot(90)cyl(r=1,Len_hand[i][j],$fn=3);
   }
 
   for (i = [0:len(Len_hand)-1])color("tan",alpha=.5){
      //Finger Generation
  
      let(j=prox)hull(){
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
-        PlaceOn(finger=i, phalange=j+1, A_hand)translate([0,-Len_hand[i][j+1],-Finger_diam[i][j+1]])fingerJoint(i,j+1, sc=fingerScale);
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,0,-Finger_diam[i][j+1]])fingerJoint(i,j+1, sc=fingerScale);
-        PlaceOn(finger=i, phalange=j-1, A_hand)translate([0,0,-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
+        PlaceOn(finger=i, phalange=j+1, A_hand = A_hand)translate([0,-Len_hand[i][j+1],-Finger_diam[i][j+1]])fingerJoint(i,j+1, sc=fingerScale);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,0,-Finger_diam[i][j+1]])fingerJoint(i,j+1, sc=fingerScale);
+        PlaceOn(finger=i, phalange=j-1, A_hand = A_hand)translate([0,0,-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
      }      
 
      if(i>thu)let(j=medi)hull(){//medial phalanges separate thumb
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
-        PlaceOn(finger=i, phalange=j+1, A_hand)translate([0,-Len_hand[i][j+1],-Finger_diam[i][j+1]])fingerJoint(i,j+1, sc=fingerScale);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
+        PlaceOn(finger=i, phalange=j+1, A_hand = A_hand)translate([0,-Len_hand[i][j+1],-Finger_diam[i][j+1]])fingerJoint(i,j+1, sc=fingerScale);
 
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,0,-Finger_diam[i][j+1]])fingerJoint(i,j+1, sc=fingerScale);
-        PlaceOn(finger=i, phalange=j-1, A_hand)translate([0,0,-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,0,-Finger_diam[i][j+1]])fingerJoint(i,j+1, sc=fingerScale);
+        PlaceOn(finger=i, phalange=j-1, A_hand = A_hand)translate([0,0,-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
      } else let(j=medi)hull(){//Thumb 
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
-        PlaceOn(finger=i, phalange=j, A_hand)
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)
           translate([0,-Finger_diam[i][j+1]*sin(Tip_angle[i]),-Finger_diam[i][j+1]*1.4])
             rotate([-Tip_angle[i],0,0])scale([fingerScale,1,1.4])
               rotate([90,0,0])up(Tip_thickness[i])
                 cyl(r=Finger_diam[i][j+1],Tip_thickness[i]*2,rounding=Tip_thickness[i], $fn=16);
-        PlaceOn(finger=i, phalange=j-1, A_hand)translate([0,0,-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
+        PlaceOn(finger=i, phalange=j-1, A_hand = A_hand)translate([0,0,-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
       }   
       if(i>thu)let(j=dist)hull(){
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
-        PlaceOn(finger=i, phalange=j, A_hand)
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)
           translate([0,-Finger_diam[i][j+1]*sin(Tip_angle[i]),-Finger_diam[i][j+1]*1.4])
             rotate([-Tip_angle[i],0,0])scale([fingerScale,1,1.4])
               rotate([90,0,0])up(Tip_thickness[i])
                 cyl(r=Finger_diam[i][j+1],Tip_thickness[i]*2,rounding=Tip_thickness[i], $fn=16);
-        PlaceOn(finger=i, phalange=j-1, A_hand)translate([0,0,-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
+        PlaceOn(finger=i, phalange=j-1, A_hand = A_hand)translate([0,0,-Finger_diam[i][j]])fingerJoint(i,j, sc=fingerScale);
       } 
   }
   
   //Palm generation   
   if (meat == true)color("tan",alpha=.5){
       hull(){
-        PlaceOn(finger=ind, phalange=meta, A_hand)rotate([90,90,0])skin([for(n=[0,step-5]) IndexPalmBlob(n)], slices=0);
-        PlaceOn(finger=thu, phalange=meta, A_hand)rotate([90,90,0])skin([for(n=[4,step-5]) ThumbBlob(n)], slices=0);
+        PlaceOn(finger=ind, phalange=meta, A_hand = A_hand)rotate([90,90,0])skin([for(n=[0,step-5]) IndexPalmBlob(n)], slices=0);
+        PlaceOn(finger=thu, phalange=meta, A_hand = A_hand)rotate([90,90,0])skin([for(n=[4,step-5]) ThumbBlob(n)], slices=0);
       }
 
  //intra digit web meta and phalenges
       let(i= ind, j=prox){
       hull(){
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
-        let(t=round(Finger_diam[i][j]/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) IndexBlob(n)], slices=0);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
+        let(t=round(Finger_diam[i][j]/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand = A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) IndexBlob(n)], slices=0);
         
         let(i=i+1){
-          PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
-          PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
-          let(t=round(Finger_diam[i][j]/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) MiddleBlob(n)], slices=0);
+          PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
+          PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
+          let(t=round(Finger_diam[i][j]/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand = A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) MiddleBlob(n)], slices=0);
         }
       }}  
       
       let(i= mid, j=prox){
       hull(){
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
-        let(t=round(Finger_diam[i][j]/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) MiddleBlob(n)], slices=0);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
+        let(t=round(Finger_diam[i][j]/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand = A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) MiddleBlob(n)], slices=0);
         
         let(i=i+1){
-          PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
-          PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
-          let(t=round((Finger_diam[i][j]+3)/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) RingBlob(n)], slices=0);
+          PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
+          PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
+          let(t=round((Finger_diam[i][j]+3)/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand = A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) RingBlob(n)], slices=0);
         }
       }}  
       
       let(i= rng, j=prox){
       hull(){
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
-        PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
-        let(t=round((Finger_diam[i][j]+3)/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) RingBlob(n)], slices=0);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
+        PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
+        let(t=round((Finger_diam[i][j]+3)/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand = A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) RingBlob(n)], slices=0);
         let(i=i+1){
-          PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
-          PlaceOn(finger=i, phalange=j, A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
-          let(t=round(Finger_diam[i][j]/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) PinkieBlob(n)], slices=0);
+          PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j],-Finger_diam[i][j]])fingerJoint(i,j, sc=1);
+          PlaceOn(finger=i, phalange=j, A_hand = A_hand)translate([0,-Len_hand[i][j]+Finger_diam[i][j],-Finger_diam[i][j]*2+Finger_diam[i][j]*(Finger_diam[i][j]/Len_hand[i][j])])rotate([90,30,0])cylinder(r=1,.1,$fn=3);
+          let(t=round(Finger_diam[i][j]/(Len_hand[i][j-1]/step)))PlaceOn(finger=i, phalange=j-1, A_hand = A_hand)rotate([90,90,0])skin([for(n=[t,t+1]) PinkieBlob(n)], slices=0);
         }
       }}  
   }
   //improved metacarpal palm blob generation 
   color("tan",alpha=.5)translate([0,0,0]){
-     let(i=thu, j=meta)PlaceOn(finger=i, phalange=j, A_hand)rotate([90,90,0])skin([for(n=count(step)) ThumbBlob(n)], slices=0);
-     let(i=ind, j=meta)PlaceOn(finger=i, phalange=j, A_hand)rotate([90,90,0])skin([for(n=count(step)) IndexBlob(n)], slices=0);
-     let(i=mid, j=meta)PlaceOn(finger=i, phalange=j, A_hand)rotate([90,90,0])skin([for(n=count(step)) MiddleBlob(n)], slices=0);
-     let(i=rng, j=meta)PlaceOn(finger=i, phalange=j, A_hand)rotate([90,90,0])skin([for(n=count(step)) RingBlob(n)], slices=0);
-     let(i=pnk, j=meta)PlaceOn(finger=i, phalange=j, A_hand)rotate([90,90,0])skin([for(n=count(step)) PinkieBlob(n)], slices=0);
+     let(i=thu, j=meta)PlaceOn(finger=i, phalange=j, A_hand = A_hand)rotate([90,90,0])skin([for(n=count(step)) ThumbBlob(n)], slices=0);
+     let(i=ind, j=meta)PlaceOn(finger=i, phalange=j, A_hand = A_hand)rotate([90,90,0])skin([for(n=count(step)) IndexBlob(n)], slices=0);
+     let(i=mid, j=meta)PlaceOn(finger=i, phalange=j, A_hand = A_hand)rotate([90,90,0])skin([for(n=count(step)) MiddleBlob(n)], slices=0);
+     let(i=rng, j=meta)PlaceOn(finger=i, phalange=j, A_hand = A_hand)rotate([90,90,0])skin([for(n=count(step)) RingBlob(n)], slices=0);
+     let(i=pnk, j=meta)PlaceOn(finger=i, phalange=j, A_hand = A_hand)rotate([90,90,0])skin([for(n=count(step)) PinkieBlob(n)], slices=0);
    }  
    
 } //END OF HAND MODULE
 
 
 //Blob definitnions   
-function PinkieBlobVec (n, theta, A_hand =A_hand, buffer=0) = let(rmeta=20/2+buffer/2,rcen=31/2+buffer/2,rprox=16/2+buffer/2, length = Len_hand[pnk][meta], h=lerpn(Finger_diam[pnk][prx]+buffer/2,Finger_diam[pnk][meta]+buffer/2,res))
-  move(PlaceOnVec(pnk, meta, A_hand), p= PlaceOnOrient(pnk, meta, A_hand, vec = rot( [90,90,0], p= [h[n],0,lerpn(0,1,res)[n]*length] + [h[n]*cos(theta), stopPeak(rprox, rcen, rmeta, n, res-1, round(res*1/2),2)*sin(theta), 0])));
+function PinkieBlobVec (n, theta, A_hand =NeutralHandFlexion, buffer=0) = let(rmeta=20/2+buffer/2,rcen=31/2+buffer/2,rprox=16/2+buffer/2, length = Len_hand[pnk][meta], h=lerpn(Finger_diam[pnk][prx]+buffer/2,Finger_diam[pnk][meta]+buffer/2,res))
+  move(PlaceOnVec(pnk, meta, A_hand = A_hand), p= PlaceOnOrient(pnk, meta, A_hand = A_hand, vec = rot( [90,90,0], p= [h[n],0,lerpn(0,1,res)[n]*length] + [h[n]*cos(theta), stopPeak(rprox, rcen, rmeta, n, res-1, round(res*1/2),2)*sin(theta), 0])));
           
 //smoothening functions 
 function smoothStart (init, fin, t, steps, power) = 

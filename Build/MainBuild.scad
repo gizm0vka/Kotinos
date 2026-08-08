@@ -61,8 +61,8 @@ index_stake = [-72,99,joint_radius+.5];
 middle_skate = [-45,107,joint_radius+.5];
 palm_skate = [-(72-7.2)/2,50,joint_radius+.5];
 
-vector_to_ring_tip = let(i=rng)PlaceOnVec(finger=i, phalange = dis, NeutralHandFlexion, vec = [-5,-5,-Finger_diam[i][dis]*2-.2]);
-vector_to_pinky_tip = let(i=pnk)PlaceOnVec(finger=i, phalange = dis, NeutralHandFlexion, vec = [-4,-4,-Finger_diam[i][dis]*2+.15]);
+vector_to_ring_tip = let(i=rng)PlaceOnVec(finger=i, phalange = dis, A_hand= NeutralHandFlexion, vec = [-5,-5,-Finger_diam[i][dis]*2-.2]);
+vector_to_pinky_tip = let(i=pnk)PlaceOnVec(finger=i, phalange = dis, A_hand= NeutralHandFlexion, vec = [-4,-4,-Finger_diam[i][dis]*2+.15]);
 function vector_to_origin(v) = move([0,0,wrist_height], p= rot([wrist_tilt,wrist_tent,0], p= -hand_origin+v)); 
 
 function ring_skate (v=[0,0,0]) =[vector_to_origin(vector_to_ring_tip)[0],vector_to_origin(vector_to_ring_tip)[1],0]+v+[1.5,-2.25,0];
@@ -78,7 +78,7 @@ BuildPinky(cut=true);
 %HSK_PCBS();
 %BuildIndexPaddles();
 //%back(23)down(0)right(1)mouseOrigin()color("gold", alpha=.5)let(A_hand = GripHandFlexion)HandsOn(meat= true, A_hand); //hand reference at flexed position 
-%mouseOrigin()let(A_hand = NeutralHandFlexion)HandsOn(meat= true, A_hand); //hand reference at neutral 
+%mouseOrigin()let(A_hand = NeutralHandFlexion)HandsOn(meat= true, A_hand = A_hand); //hand reference at neutral 
 
 module BuildSupport () {
    color("blue", alpha=1)SupportJointThumb();
@@ -94,13 +94,13 @@ module BuildSupport () {
 module mouseOrigin () {translate([0,0,wrist_height])rotate([wrist_tilt,wrist_tent,0]) //Set hand orientation 
 translate(-hand_origin+[0,0,0])children();} 
 
-module v_ind () { let(i=ind)PlaceOn(finger=i, phalange = dis, NeutralHandFlexion)children();}
+module v_ind () { let(i=ind)PlaceOn(finger=i, phalange = dis, A_hand = NeutralHandFlexion)children();}
 
 //PCB mounting and placements
 module HSK_PCBS () { //place HSK PCBs 
   mouseOrigin(){
-     PlaceOn(finger= ind, phalange = dis, NeutralHandFlexion)indexOrigin(index_adjust+[0,0,1])hsk_index();
-     PlaceOn(finger= thu, phalange = mid, NeutralHandFlexion)thumbButtonLower()hsk_thumb_PCB();
+     PlaceOn(finger= ind, phalange = dis, A_hand = NeutralHandFlexion)indexOrigin(index_adjust+[0,0,1])hsk_index();
+     PlaceOn(finger= thu, phalange = mid, A_hand = NeutralHandFlexion)thumbButtonLower()hsk_thumb_PCB();
   }
   move(sensor_origin)zrot(sensor_angle)hsk_main();
 }
@@ -140,12 +140,12 @@ function sensorPCBMountLeft (h=0) = move(sensor_origin, p= zrot(sensor_angle, p=
 // Paddle Design   
 module BuildThumb (cut=false, orientation="lower") {
   difference(){
-    let(i=thu)mouseOrigin()PlaceOn(finger= thu, phalange = mid, NeutralHandFlexion)down(Finger_diam[i][dis]*2)back(-5)
-        PatchPaddle(thumb_patch, debug=false);
+    let(i=thu)mouseOrigin()PlaceOn(finger= thu, phalange = mid, A_hand = NeutralHandFlexion)down(Finger_diam[i][dis]*2)back(-5)
+        PatchPaddle(Patch = thumb_patch, debug=false);
     if(cut == true){
       if(orientation == "lower"){
         mouseOrigin()let(i=thu)
-          PlaceOn(finger= i, phalange = mid, NeutralHandFlexion)down(Finger_diam[i][dis]*2){
+          PlaceOn(finger= i, phalange = mid, A_hand = NeutralHandFlexion)down(Finger_diam[i][dis]*2){
             rot([20, 0, 2.25]){
               move([-10,-12,5])down(5)yrot(30)linear_extrude(11)right(1.90)zrot(0)rect([.75,16.],rounding=[0.25,0.25,-3.25,-4.25]);
               move([-11.75,5.7,5])down(5)yrot(30)linear_extrude(11)right(1.90)zrot(0)rect([.75,16.],rounding=[-4.25,-3.25,.25,.25]);
@@ -175,15 +175,15 @@ module BuildThumb (cut=false, orientation="lower") {
       }
     }
   }
-  mouseOrigin()PlaceOn(finger= thu, phalange = mid, NeutralHandFlexion)thumbButtonLower()thumbPCBMount();
+  mouseOrigin()PlaceOn(finger= thu, phalange = mid, A_hand = NeutralHandFlexion)thumbButtonLower()thumbPCBMount();
 }
 
 module BuildRing (cut=false, rend=false, debug=false) {
   clearance = 1; //mm
 
   difference(){
-    let(i=rng)mouseOrigin()PlaceOn(finger= i, phalange = dis, NeutralHandFlexion)down(Finger_diam[i][dis]*2)back(-5)
-        PatchPaddle(RingPatch, debug=debug);
+    let(i=rng)mouseOrigin()PlaceOn(finger= i, phalange = dis, A_hand = NeutralHandFlexion)down(Finger_diam[i][dis]*2)back(-5)
+        PatchPaddle(Patch = RingPatch, debug=debug);
     if(cut == true)
       down(5-clearance)cube([200,250,10],center=true);
   }
@@ -193,7 +193,7 @@ module BuildPinky (cut=false, rend=false, debug= false) {
   clearance = 1; //mm
 
   difference(){
-    let(i=pnk)mouseOrigin()PlaceOn(finger= i, phalange = dis, NeutralHandFlexion)down(Finger_diam[i][dis]*2)back(-5)
+    let(i=pnk)mouseOrigin()PlaceOn(finger= i, phalange = dis, A_hand = NeutralHandFlexion)down(Finger_diam[i][dis]*2)back(-5)
       PatchPaddle(PinkyPatch, debug=debug);
     if(cut == true)
       down(10-clearance)cube([200,250,20],center=true);
@@ -204,7 +204,7 @@ module BuildIndexPaddles () {
 //  index = [-15.5,1,10.6];
 //  middle = [13.5,1,10.6]; 
   mouseOrigin(){
-    let(i=ind)PlaceOn(finger= i, phalange = dis,  NeutralHandFlexion){
+    let(i=ind)PlaceOn(finger= i, phalange = dis,  A_hand = NeutralHandFlexion){
       indexOrigin(index_adjust+[0,0,.5])left(0)fwd(0)IndexDeepPaddle(); //mid 
       indexOrigin(index_adjust)left(2)fwd(0)xflip()MidPaddle(); //mid;
     }
@@ -216,11 +216,11 @@ module BuildIndexPaddles () {
 module SupportJointThumb () {
 
   module thumbBottom() {
-    mouseOrigin()PlaceOn(finger= thu, phalange = mid, NeutralHandFlexion)thumbButtonLower()
+    mouseOrigin()PlaceOn(finger= thu, phalange = mid, A_hand = NeutralHandFlexion)thumbButtonLower()
       move([8.25+joint_radius,.25,4.-5])children();
   }
   module thumbBottom2() {
-    mouseOrigin()PlaceOn(finger= thu, phalange = mid, NeutralHandFlexion)thumbButtonLower()right(joint_radius)children();
+    mouseOrigin()PlaceOn(finger= thu, phalange = mid, A_hand = NeutralHandFlexion)thumbButtonLower()right(joint_radius)children();
   } 
 
   let(h=-4.5){
@@ -421,6 +421,6 @@ module SupportJointRingPinky () {
 
 
   module PaddleMountPlacer(u=0,v=0, height_offset=0, finger, phalange, patch) {
-    mouseOrigin()PlaceOn(finger= finger, phalange = phalange, NeutralHandFlexion)down(Finger_diam[finger][phalange]*2+height_offset)
+    mouseOrigin()PlaceOn(finger= finger, phalange = phalange, A_hand = NeutralHandFlexion)down(Finger_diam[finger][phalange]*2+height_offset)
             move(bezier_patch_points(EdgePatching(patch), u,v))yrot(0)back(-5)children(); 
   }
