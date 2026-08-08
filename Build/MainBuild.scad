@@ -72,9 +72,9 @@ function pinky_skate (v=[0,0,0]) =[vector_to_origin(vector_to_pinky_tip)[0],vect
 $fn=32; //number of segments on curves, set lower for faster render, higher for more res
 
 BuildSupport();
-BuildThumb(cut=true);
-BuildRing(cut=true);
-BuildPinky(cut=true);
+BuildThumb(cut=false);
+BuildRing(cut=false);
+BuildPinky(cut=false);
 %HSK_PCBS();
 %BuildIndexPaddles();
 //%back(23)down(0)right(1)mouseOrigin()color("gold", alpha=.5)let(A_hand = GripHandFlexion)HandsOn(meat= true, A_hand); //hand reference at flexed position 
@@ -205,7 +205,7 @@ module BuildIndexPaddles () {
 //  middle = [13.5,1,10.6]; 
   mouseOrigin(){
     let(i=ind)PlaceOn(finger= i, phalange = dis,  A_hand = NeutralHandFlexion){
-      indexOrigin(index_adjust+[0,0,.5])left(0)fwd(0)IndexDeepPaddle(); //mid 
+      indexOrigin(index_adjust+[0,0,.5])left(0)fwd(0)IndexDeepPaddle(cut = ($preview ? false : true)); //mid 
       indexOrigin(index_adjust)left(2)fwd(0)xflip()MidPaddle(); //mid;
     }
   }

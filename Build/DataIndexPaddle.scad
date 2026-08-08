@@ -46,10 +46,11 @@ module IndexShallowPaddle (shift =[0,0.0,-2]) {
    }
 }
 
-module IndexDeepPaddle (shift =[0,-0.0,-1.5], scaling = [1,1,1]) {
+module IndexDeepPaddle (shift =[0,-0.0,-1.5], scaling = [1,1,1], cut = true) {
   difference(){
     left(14)up(13.25)fwd(3)move(shift)scale(scaling)PatchPaddle(DeepPaddlePatch, debug=false); //mid 
-    move([-8.5,-1.5,10])cuboid([7,15,5],rounding=1); 
+    if (true == cut)  
+        move([-8.5,-1.5,10])cuboid([7,15,5],rounding=1); 
   }
   move([-15.5,1,10.35+shift[2]/2-.4])cuboid([4,2.5,4.+shift[2]+.2],rounding=.5); //switch nib
   
