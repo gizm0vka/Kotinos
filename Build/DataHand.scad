@@ -62,10 +62,10 @@
   middle_middle     = [-25+adj, 5+roll_adj, 0];
   middle_distal     = [-20, 10, 0];
   //Ring
-  ring_metacarpal = [ -3,  5, -5]; 
+  ring_metacarpal = [ -5,  5, -5]; 
   ring_proximal   = [-24,  3, 0];
   ring_middle     = [-35,  15-adj, 0];
-  ring_distal     = [-40, 20-adj, 0];
+  ring_distal     = [-35, 20-adj, 0];
   //Pinky
   pinky_metacarpal = [ -12, 0, -10]; 
   pinky_proximal   = [-18,  0, -1];
