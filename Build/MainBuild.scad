@@ -57,8 +57,8 @@ module middlePaddleMount ()     indexOrigin(index_adjust+[0,0,-4.5])move([13.5,-
 // skate placement (mm)
 thumb_skate  = [-72,49,joint_radius+.5];
 indthumb_skate  = [-82,78,joint_radius+.5];
-index_stake = [-72,99,joint_radius+.5];
-middle_skate = [-45,107,joint_radius+.5];
+index_stake = [-72, 99 +33, joint_radius+.5];
+middle_skate = [-45,107 +33,joint_radius+.5];
 palm_skate = [-(72-7.2)/2,50,joint_radius+.5];
 
 vector_to_ring_tip = let(i=rng)PlaceOnVec(finger=i, phalange = dis, A_hand= NeutralHandFlexion, vec = [-5,-5,-Finger_diam[i][dis]*2-.2]);
@@ -69,7 +69,7 @@ function ring_skate (v=[0,0,0]) =[vector_to_origin(vector_to_ring_tip)[0],vector
 function pinky_skate (v=[0,0,0]) =[vector_to_origin(vector_to_pinky_tip)[0],vector_to_origin(vector_to_pinky_tip)[1],0]+v+[8.5,-4.,0];
 
  /*---------------------------------- Builds --------------------------*/
-$fn=32; //number of segments on curves, set lower for faster render, higher for more res
+$fn= $preview ? 5 : 32; //number of segments on curves, set lower for faster render, higher for more res
 
 BuildSupport();
 BuildThumb(cut= ($preview ? false : true));
