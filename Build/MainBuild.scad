@@ -15,11 +15,11 @@ include <DataIndexPaddle.scad>
 // hand orientation and placement 
 wrist_tent = 21; //angle wrist pronation  
 wrist_tilt = 23; //angle wrist flexion 
-wrist_height =16.0; // wrist height 
+wrist_height =15.0; // wrist height 
 hand_origin = mean([PinkieBlobVec (res*.5, 0, NeutralHandFlexion),PinkieBlobVec (res*.5, 180, NeutralHandFlexion, buffer=0)]); //define origin ulna joint (or there-about)
 
 //Sensor PCB placement 
-sensor_origin= [-44, 68, 6.5]; //mm
+sensor_origin= [-48, 90, 6.5]; //mm
 sensor_angle= 4; //in deg
 
 //index PCB placement
@@ -78,7 +78,7 @@ BuildPinky(cut= ($preview ? false : true));
 %HSK_PCBS();
 %BuildIndexPaddles();
 //%back(23)down(0)right(1)mouseOrigin()color("gold", alpha=.5)let(A_hand = GripHandFlexion)HandsOn(meat= true, A_hand); //hand reference at flexed position 
-%mouseOrigin()let(A_hand = NeutralHandFlexion)HandsOn(meat= true, A_hand = A_hand); //hand reference at neutral 
+//%mouseOrigin()let(A_hand = NeutralHandFlexion)HandsOn(meat= true, A_hand = A_hand); //hand reference at neutral 
 
 module BuildSupport () {
    color("blue", alpha=1)SupportJointThumb();
@@ -286,12 +286,12 @@ module SupportJointIndexPCB () {
      hull()mouseOrigin(){v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); v_ind()indexPCBMount(quad=3, u=-joint_radius)sphere(joint_radius); }
      hull()mouseOrigin(){v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); v_ind()indexPCBMount(quad=1, u=-joint_radius)sphere(joint_radius); }
 
-//     hull(){move(middle_skate)sphere(joint_radius); mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); }
+     hull(){move(middle_skate)sphere(joint_radius); mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); }
      
      hull(){mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); move(index_stake)sphere(joint_radius);}
      hull(){mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); move(ring_skate([0,0,joint_radius+.5]))sphere(joint_radius);}
      hull()mouseOrigin()v_ind(){indexPCBMount(quad=3, u=-joint_radius)sphere(joint_radius); indexPCBMount(quad=3, u=-joint_radius)fwd(3)sphere(joint_radius); }
-     hull(){move(thumb_skate)sphere(joint_radius); mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius);}   
+     //hull(){move(thumb_skate)sphere(joint_radius); mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius);}   
 
 
 //     #hull(){mouseOrigin()v_ind()indexPCBMount(quad=1, u=-joint_radius-3)sphere(joint_radius); move(index_stake)sphere(joint_radius);}   

@@ -41,7 +41,7 @@
   //Thumb 
   thumb_metacarpal = [-14, -100, 42.75]; 
   thumb_proximal   = [-15, 0, 0];
-  thumb_distal     = [-15, 0, 0];
+  thumb_distal     = [-15, +20, +10];
   thumb_adduction  = [0,0,-30]; 
 
     adj = 10;
@@ -67,10 +67,10 @@
   ring_middle     = [-35,  15-adj, 0];
   ring_distal     = [-40, 20-adj, 0];
   //Pinky
-  pinky_metacarpal = [ -11, 0,-10]; 
+  pinky_metacarpal = [ -12, 0, -10]; 
   pinky_proximal   = [-18,  0, -1];
-  pinky_middle     = [-10,  5,  3];
-  pinky_distal     = [-5, 10,  0];
+  pinky_middle     = [-10,  20,  3];
+  pinky_distal     = [-40, 20,  0];
   
 /*END of Critical Parameters*/
          
