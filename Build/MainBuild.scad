@@ -51,12 +51,12 @@ module pinkyPaddleSupportBack ()   PaddleMountPlacer(0.4, 0.95, 1.75, pnk, dis, 
 module pinkyPaddleSupportBottom () PaddleMountPlacer(.98, 0.05, 2.75, pnk, dis, PinkyPatch)sphere(joint_radius);
 
 //Position of Sensor PCB mount
-module indexPaddleMount ()   indexOrigin(index_adjust+[0,0,-2.5])move([-15.5,-20,10.6])sphere(joint_radius);
-module middlePaddleMount ()     indexOrigin(index_adjust+[0,0,-4.5])move([13.5,-20,10.])sphere(joint_radius);
+module indexPaddleMount ()   indexOrigin(index_adjust+[0,0,-2.5])move([-15.5,-20 -0.5,10.6])sphere(joint_radius);
+module middlePaddleMount ()     indexOrigin(index_adjust+[0,0,-4.5])move([13.5,-20 -0.5,10.])sphere(joint_radius);
 
 // skate placement (mm)
 thumb_skate  = [-72,49,joint_radius+.5];
-indthumb_skate  = [-82,78,joint_radius+.5];
+indthumb_skate  = [-82 -28,78,joint_radius+.5];
 index_stake = [-72, 99 +33, joint_radius+.5];
 middle_skate = [-45,107 +33,joint_radius+.5];
 palm_skate = [-(72-7.2)/2,50,joint_radius+.5];
@@ -291,6 +291,7 @@ module SupportJointIndexPCB () {
      hull(){mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); move(index_stake)sphere(joint_radius);}
      hull(){mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); move(ring_skate([0,0,joint_radius+.5]))sphere(joint_radius);}
      hull()mouseOrigin()v_ind(){indexPCBMount(quad=3, u=-joint_radius)sphere(joint_radius); indexPCBMount(quad=3, u=-joint_radius)fwd(3)sphere(joint_radius); }
+     hull()mouseOrigin()v_ind(){indexPCBMount(quad=2, u=-joint_radius)sphere(joint_radius); indexPCBMount(quad=2, u=-joint_radius)fwd(3)sphere(joint_radius); }
      //hull(){move(thumb_skate)sphere(joint_radius); mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius);}   
 
 
@@ -383,6 +384,7 @@ module SupportJointIndexPaddle () {
     union(){
       mouseOrigin()v_ind()hull(){indexPaddleMount();middlePaddleMount();}
       hull()mouseOrigin()v_ind(){middlePaddleMount(); indexPCBMount(quad=3, u=-joint_radius)fwd(3)sphere(joint_radius); }
+      hull()mouseOrigin()v_ind(){middlePaddleMount(); indexPCBMount(quad=2, u=-joint_radius)fwd(3)sphere(joint_radius); }
 
       hull(){mouseOrigin()v_ind()indexPaddleMount();thumbPaddleSupportTop();}
       hull(){mouseOrigin()v_ind()indexPaddleMount();thumbPaddleSupportBack();}
@@ -396,8 +398,8 @@ module SupportJointIndexPaddle () {
       hull(){mouseOrigin()v_ind()middlePaddleMount();ringPaddleSupportFront();}
       hull(){mouseOrigin()v_ind()middlePaddleMount();ringPaddleSupportTop();}
 
-      mouseOrigin()v_ind()indexOrigin([0,0,-5.5])translate([ -15.5,-20,11.75])cuboid([6,5.5,2.5],rounding=.5);
-      mouseOrigin()v_ind()indexOrigin([0,0,-7.5])translate([13.5,-20,11.75])cuboid([6,5.5,2.5],rounding=.5);
+      mouseOrigin()v_ind()indexOrigin([0,0,-5.5])translate([ -15.5,-20 -0.5,11.75])cuboid([6,5.5,2.5],rounding=.5);
+      mouseOrigin()v_ind()indexOrigin([0,0,-7.5])translate([13.5,-20 -0.5,11.75])cuboid([6,5.5,2.5],rounding=.5);
     }
    //cuts
    mouseOrigin()v_ind(){
