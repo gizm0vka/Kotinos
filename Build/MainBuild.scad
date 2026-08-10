@@ -33,7 +33,7 @@ module thumbButtonUpper () {xrot(19)zrot(2)down(15.5)back(-8)left(-4.)children()
 module thumbButtonLower () {yrot(35)xrot(15)zrot(2)down(17.)back(-8)left(-.75)zrot(190)children();} //thumb bottom for lower placement 
 
 //Paddle joint placement 
-joint_radius= 1.1;  //mm
+joint_radius= 1.2;  //mm
 
 //joint placement on paddles param: fraction of x and y of bezier surface coordinates and depth adjustment in mm
 module thumbPaddleSupportFront () PaddleMountPlacer(0.55, 0.05, 1.25, thu, mid, thumb_patch)sphere(joint_radius);
@@ -72,7 +72,7 @@ function pinky_skate (v=[0,0,0]) =[vector_to_origin(vector_to_pinky_tip)[0],vect
 $fn= $preview ? 5 : 32; //number of segments on curves, set lower for faster render, higher for more res
 
 BuildSupport();
-BuildThumb(cut= ($preview ? false : true));
+BuildThumb(cut= ($preview ? false : false));
 BuildRing(cut= ($preview ? false : true));
 BuildPinky(cut= ($preview ? false : true));
 %HSK_PCBS();
@@ -326,9 +326,10 @@ module SupportJointSensorMount () {
     difference(){
       union(){
         move(sensorPCBMountRight(-1.75))cyl(r=joint_radius*2, rounding2=.25 ,1.5 );
-        move(sensorPCBMountRight(1.25))cyl(r1=joint_radius+.7,  r2=joint_radius,rounding1=-.25,rounding2=.75, 4.5);
+        move(sensorPCBMountRight(1.25))cyl(r1=joint_radius+.7,  r2=joint_radius+.7, rounding1=-.25,rounding2=.75, 4.5);
       }
-        move(sensorPCBMountRight(-1.5))cyl(d=1.25,2.1); //hole
+        if ($preview == false)
+            move(sensorPCBMountRight(-1.5))cyl(d=1.25,2.1); //hole
     }
     
     difference(){
@@ -336,7 +337,8 @@ module SupportJointSensorMount () {
         move(sensorPCBMountLeft(-1.75))cyl(r=joint_radius*2, rounding2=.25 ,1.5 );
         move(sensorPCBMountLeft(.5))cyl(r1=joint_radius+.7,  r2=joint_radius+.5,rounding1=-.25, rounding2=.75, 3);
       }
-        move(sensorPCBMountLeft(-1.5))cyl(d=1.25,2.1); //hole
+        if ($preview == false)
+            move(sensorPCBMountLeft(-1.5))cyl(d=1.25,2.1); //hole
     }
  }
 
