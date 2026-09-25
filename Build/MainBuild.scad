@@ -27,7 +27,6 @@ index_origin = [11,-12.25,-11.75]; //mm
 index_angle = [37,3,7.0]; //deg
 index_adjust = [0,0,-3]; //height adjustment in mm
 module indexOrigin (shift=[0,0,0]) {rot(index_angle)move(index_origin+shift)children();}
-
 //thumb PCB placement 
 module thumbButtonUpper () {xrot(19)zrot(2)down(15.5)back(-8)left(-4.)children();} //thumb bottoms for upper placement 
 module thumbButtonLower () {yrot(35)xrot(15)zrot(2)down(17.)back(-8)left(-.75)zrot(190)children();} //thumb bottom for lower placement 
@@ -75,7 +74,7 @@ BuildSupport();
 BuildThumb(cut= ($preview ? false : false));
 BuildRing(cut= ($preview ? false : true));
 BuildPinky(cut= ($preview ? false : true));
-%HSK_PCBS();
+//%HSK_PCBS();
 %BuildIndexPaddles();
 //%back(23)down(0)right(1)mouseOrigin()color("gold", alpha=.5)let(A_hand = GripHandFlexion)HandsOn(meat= true, A_hand); //hand reference at flexed position 
 //%mouseOrigin()let(A_hand = NeutralHandFlexion)HandsOn(meat= true, A_hand = A_hand); //hand reference at neutral 
@@ -109,36 +108,43 @@ function sensorPCBMountRight (h=0) = move(sensor_origin, p= zrot(sensor_angle, p
 function sensorPCBMountLeft (h=0) = move(sensor_origin, p= zrot(sensor_angle, p=[   -39/2+2.5/2+1, 18.5-13, 3+h]));  
 
  module thumbPCBMount () { 
+     {
     move([6.35,-4.75,4.0])prismoid(size1=[2,3], size2=[2,3], shift=[0,0], h=1.75);
 //    #move([6.35,-4.75,5.75])prismoid(size1=[2,3], size2=[1,3], shift=[.5,0], h=1.2);
-    move([3.75,5.25,4.0])prismoid(size1=[2,3], size2=[2,3], shift=[0,0], h=1.); 
+    move([3.75,5.25,4.0 -0.1])prismoid(size1=[2,3], size2=[2,3], shift=[0,0], h=1.0); 
     
     move([-5.25,-7.25+2.25,3.25])cube([2,4,7.5],center=true);
+         
     difference(){
       color("yellow"){
-        move([-12.5/2+2.5,  18.5/2-2, 2.55+1.6/2])cyl(r=1.5, rounding2=0, 4.1+1.6);
-        move([  -12.5/2+4, -18.5/2+4, 2.375+1.6/2])cyl(r=1.5, rounding2=0, 3.75+1.6);
+        //move([-12.5/2+2.5,  18.5/2-2, 2.55+1.6/2])cyl(r=1.5, rounding2=0, 4.1+1.6);
+        move([  -12.5/2+4+1, -18.5/2+4+1, 2.375+1.6/2])cyl(r=1.5, rounding2=0, 3.75+1.6);
       }
       move([-12.5/2+2.5,  18.5/2-2, 2.6])cyl(r=.75, 4.2);
-      move([  -12.5/2+4, -18.5/2+4, 2.5])cyl(r=.75, 4);
+      move([  -12.5/2+4+1, -18.5/2+4+1, 2.5])cyl(d=1.3, 4);
       move([-12.5/2+4.75+3.25,5.25,2])xrot(-90)yrot(90)cube([4.5,3,9.25],center=true);
     }    
     difference(){
+        union(){
+        move([6.5-2,.2-1.5,2])cyl(d=2, 3);
       move([6.75,.25,4.0]){ 
         color("yellow")left(4.125)up(.5)prismoid(size1=[10.75,1], size2=[1.75,1], shift=[-4.5,0], h=.75);
-        left(3.5)down(2)prismoid(size1=[9.75,3.], size2=[9.75,1], shift=[0,0], h=2.5); 
-        left(3.5)down(3.5)prismoid(size1=[9.75,3], size2=[9.75,3], shift=[-0,0], h=1.5); 
+        left(3.5)down(2.0)prismoid(size1=[9.75,3.0], size2=[9.75,1.0], shift=[0,0], h=2.5+0.0); 
+        left(3.5-1)down(3.5)prismoid(size1=[9.75-2,3], size2=[9.75-2,3], shift=[0,0], h=1.5); 
         
         color("red")left(8.5)back(-1.75)down(-.5)prismoid(size1=[2.,4.5], size2=[2.,4.5], shift=[0,-0], h=1); 
         color("blue")left(8.5)down(2)prismoid(size1=[2,3.], size2=[2,1], shift=[0,0], h=2.5); 
-        color("blue")left(8)down(3.5)prismoid(size1=[1.,3.], size2=[2,3], shift=[-.5,0], h=1.5); 
+        //color("blue")left(8)down(3.5)prismoid(size1=[1.0,3.], size2=[2.0,3], shift=[-.5,0], h=1.5); 
       }
-      move([6.5,.2,2])cyl(r=.75, 3);
+  }
+      move([6.5-2,.2-1.5,2])cyl(d=1.3, 3);
     }
+}
 }
 
 // Paddle Design   
 module BuildThumb (cut=false, orientation="lower") {
+    //cut=true;
   difference(){
     let(i=thu)mouseOrigin()PlaceOn(finger= thu, phalange = mid, A_hand = NeutralHandFlexion)down(Finger_diam[i][dis]*2)back(-5)
         PatchPaddle(Patch = thumb_patch, debug=false);
@@ -148,13 +154,19 @@ module BuildThumb (cut=false, orientation="lower") {
           PlaceOn(finger= i, phalange = mid, A_hand = NeutralHandFlexion)down(Finger_diam[i][dis]*2){
             rot([20, 0, 2.25]){
               move([-10,-12,5])down(5)yrot(30)linear_extrude(11)right(1.90)zrot(0)rect([.75,16.],rounding=[0.25,0.25,-3.25,-4.25]);
-              move([-11.75,5.7,5])down(5)yrot(30)linear_extrude(11)right(1.90)zrot(0)rect([.75,16.],rounding=[-4.25,-3.25,.25,.25]);
+              move([-11.75,5.7,5+1])down(5)yrot(30)linear_extrude(11)right(1.90)zrot(0)rect([.75,16.],rounding=[-4.25,-3.25,.25,.25]);
               
               down(5)yrot(30)move([-17.25,-1.75,2])linear_extrude(11){
                 fwd(2.25)right(4.45)zrot(90)rect([2,1],rounding=[-1,0,0,.0]);
                 fwd(2.5)right(.85+.35-.25-.125)zrot(90)rect([2.5,7+2.75],rounding=[0,-1.5,.75,.75]);
+
+
 //                right(.85+.35)fwd(.25)zrot(90)rect([2.,5.5],rounding=[-2,-0,0,.75]);
-                right(.85+.35-1.25)fwd(.25)zrot(90)rect([2.,5.5+2.5],rounding=[-1,-0,0,.75]);
+
+
+                right(.85+.35-1.25-0.5)fwd(.25)zrot(90)rect([2. +0.5,5.5+2.5],rounding=[-1,-0,0,.75]);
+
+
 //              #down(5)yrot(30)move([-17.25,-1.75,2])linear_extrude(11){
 //                fwd(2.25)right(4.45)zrot(90)rect([2,1],rounding=[-1,0,0,.0]);
 //                fwd(2.5)right(.85+.35+1.)zrot(90)rect([2.5,7],rounding=[0,-4,.75,.75]);
@@ -213,6 +225,18 @@ module BuildIndexPaddles () {
 
 // skeleton joints 
 
+module cutSkateHoles(){
+    let(d=2.0, h=2)down(1){
+        move(thumb_skate)cyl(d=d, h=h);
+        move(indthumb_skate)cyl(d=d, h=h);
+        move(index_stake)cyl(d=d, h=h);
+        move(middle_skate)cyl(d=d, h=h);
+        move(palm_skate)cyl(d=d, h=h);
+        move(ring_skate([0,0,joint_radius+.5]))cyl(d=d, h=h);
+        move(pinky_skate([-.0,-.0,joint_radius+.5]))cyl(d=d, h=h);
+   }
+}
+
 module SupportJointThumb () {
 
   module thumbBottom() {
@@ -223,20 +247,28 @@ module SupportJointThumb () {
     mouseOrigin()PlaceOn(finger= thu, phalange = mid, A_hand = NeutralHandFlexion)thumbButtonLower()right(joint_radius)children();
   } 
 
-  let(h=-4.5){
-    hull(){move(index_stake)sphere(joint_radius); thumbPaddleSupportFront();}
-    hull(){move(indthumb_skate)sphere(joint_radius); thumbPaddleSupportFront();}
-    hull(){move(thumb_skate)sphere(joint_radius);thumbBottom()sphere(joint_radius);}
-    hull(){move(indthumb_skate)sphere(joint_radius);thumbBottom()sphere(joint_radius);}
-    hull(){thumbBottom()sphere(joint_radius);
-           thumbBottom2()move([10.55,.25,4.0]){ 
-             left(3.5)down(2)prismoid(size1=[.05,3.], size2=[.05,1], shift=[0,0], h=2.5); 
-             left(3.5)down(3.5)prismoid(size1=[.05,3], size2=[.05,3], shift=[-0,0], h=1.5); 
-           }} 
+    let(h=-4.5){
+        difference(){
+            union(){
+                hull(){move(index_stake)sphere(joint_radius); thumbPaddleSupportFront();}
+                hull(){move(indthumb_skate)sphere(joint_radius); thumbPaddleSupportFront();}
+                hull(){move(thumb_skate)sphere(joint_radius);thumbBottom()sphere(joint_radius);}
+                hull(){move(indthumb_skate)sphere(joint_radius);thumbBottom()sphere(joint_radius);}
+                hull(){
+                    thumbBottom()sphere(joint_radius);
+                    thumbBottom2()move([10.55,.25,4.0]){ 
+                        left(3.5)down(2)prismoid(size1=[.05,3.], size2=[.05,1], shift=[0,0], h=2.5); 
+                        left(3.5)down(3.5)prismoid(size1=[.05,3], size2=[.05,3], shift=[-0,0], h=1.5); 
+                    }
+                } 
 
-    hull(){thumbPaddleSupportBack(); move(palm_skate)sphere(joint_radius);}
-    hull(){thumbPaddleSupportBack(); move(thumb_skate)sphere(joint_radius);}
-  } 
+                hull(){thumbPaddleSupportBack(); move(palm_skate)sphere(joint_radius);}
+                hull(){thumbPaddleSupportBack(); move(thumb_skate)sphere(joint_radius);}
+            }
+            
+            cutSkateHoles();
+        }
+    } 
 }
 
 module indexPCBMount (quad=0, u=0) { 
@@ -244,7 +276,7 @@ module indexPCBMount (quad=0, u=0) {
     if(quad==0)translate([-8,(20-2.5)/2,u])children(); 
     else if(quad==1)translate([ 8,(20-2.5)/2,u])children(); 
     else if(quad==2)translate([-8.5,-(20-2.5)/2,u])children(); 
-    else if(quad==3)translate([ 8.5,-(20-2.5)/2,u])children(); 
+    else if(quad==3)translate([ 8.5-0.0,-(20-2.5)/2,u])children(); 
     else if(quad==4)translate([-11,-0,u])children(); 
     else if(quad==5)translate([ 11, 0,u])children(); 
     else if(quad==6)translate([ 0,-18,u])children(); 
@@ -263,6 +295,10 @@ module SupportJointIndexPCB () {
      
       hull(){mouseOrigin()v_ind()indexPCBMount(quad=0, u=-joint_radius)sphere(joint_radius); move(index_stake)sphere(joint_radius);}   
       hull(){mouseOrigin()v_ind()indexPCBMount(quad=4, u=-4)sphere(joint_radius); thumbPaddleSupportFront();}   
+      hull()mouseOrigin()v_ind(){indexPCBMount(quad=2, u=-joint_radius)sphere(joint_radius); indexPCBMount(quad=2, u=-joint_radius)fwd(3)sphere(joint_radius); }
+      hull()mouseOrigin()v_ind(){indexPCBMount(quad=3, u=-joint_radius)fwd(3)sphere(joint_radius); indexPCBMount(quad=2, u=-joint_radius)fwd(3)sphere(joint_radius); }
+      let(down_adj=0.3, jr_adj=-0.1)hull()mouseOrigin()v_ind(){indexPCBMount(quad=1, u=-joint_radius)down(down_adj)sphere(joint_radius +jr_adj); indexPCBMount(quad=0, u=-joint_radius)down(down_adj)sphere(joint_radius +jr_adj); }
+      
       
       mouseOrigin()v_ind(){
         let(d=2.5, h=2, r=0)indexPCBMount(quad=0, u=.5)cyl(d=d,h,rounding2= r);
@@ -275,10 +311,15 @@ module SupportJointIndexPCB () {
      }
     }
     
-    mouseOrigin()v_ind(){
-      let(d=1.25, h=6, r=0)indexPCBMount(quad=0,u=0)cyl(d=d,h,rounding2= r);
-      let(d=1.25, h=6, r=0)indexPCBMount(quad=2,u=0)cyl(d=d,h,rounding2= r);
-    }
+    cutSkateHoles();
+    
+    if (!$preview)
+        mouseOrigin()v_ind(){
+            let(d=1.25, h=6, r=0)indexPCBMount(quad=0,u=0)cyl(d=d,h+3,rounding2= r);
+            let(d=1.25, h=6, r=0)indexPCBMount(quad=2,u=0)cyl(d=d,h,rounding2= r);
+            let(d=1.25, h=6, r=0)indexPCBMount(quad=1, u=0)cyl(d=d,h,rounding2= r);
+        }
+    
   }
   //build mid side 
   difference(){
@@ -290,8 +331,8 @@ module SupportJointIndexPCB () {
      
      hull(){mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); move(index_stake)sphere(joint_radius);}
      hull(){mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); move(ring_skate([0,0,joint_radius+.5]))sphere(joint_radius);}
-     hull()mouseOrigin()v_ind(){indexPCBMount(quad=3, u=-joint_radius)sphere(joint_radius); indexPCBMount(quad=3, u=-joint_radius)fwd(3)sphere(joint_radius); }
-     hull()mouseOrigin()v_ind(){indexPCBMount(quad=2, u=-joint_radius)sphere(joint_radius); indexPCBMount(quad=2, u=-joint_radius)fwd(3)sphere(joint_radius); }
+     hull()mouseOrigin()v_ind(){indexPCBMount(quad=3, u=-joint_radius)sphere(joint_radius); indexPCBMount(quad=3, u=-joint_radius)fwd(3)sphere(joint_radius);}
+     
      //hull(){move(thumb_skate)sphere(joint_radius); mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius);}   
 
 
@@ -308,21 +349,29 @@ module SupportJointIndexPCB () {
      }
     }
     
-    mouseOrigin()v_ind(){
-      let(d=1.25, h=6, r=0)indexPCBMount(quad=1, u=0)cyl(d=d,h,rounding2= r);
-      let(d=1.25, h=6, r=0)indexPCBMount(quad=3, u=0)cyl(d=d,h,rounding2= r);
-    }
+    cutSkateHoles();
+    
+    if (!$preview)
+        mouseOrigin()v_ind(){
+            let(d=1.25, h=6, r=0)indexPCBMount(quad=1, u=0)cyl(d=d,h,rounding2= r);
+            let(d=1.25, h=6, r=0)indexPCBMount(quad=3, u=0)cyl(d=d,h,rounding2= r);
+        }
   }
 
 }
 
 module SupportJointSensorMount () {
-    hull(){move(sensorPCBMountRight(3))sphere(joint_radius); thumbPaddleSupportBack();}
-    hull(){move(sensorPCBMountRight(3))sphere(joint_radius); move(palm_skate)sphere(joint_radius);}
-    
-    hull(){move(sensorPCBMountLeft(1))sphere(joint_radius);move(sensorPCBMountLeft(1)+[-5,0,0])sphere(joint_radius);}
-    hull(){move(sensorPCBMountLeft(1)+[-5,0,0])sphere(joint_radius);thumbPaddleSupportFront();}
-    hull(){move(sensorPCBMountLeft(1))sphere(joint_radius); move(sensorPCBMountRight(3))sphere(joint_radius);}
+    difference(){
+        union(){
+            hull(){move(sensorPCBMountRight(3))sphere(joint_radius); thumbPaddleSupportBack();}
+            hull(){move(sensorPCBMountRight(3))sphere(joint_radius); move(palm_skate)sphere(joint_radius);}
+            
+            hull(){move(sensorPCBMountLeft(1))sphere(joint_radius);move(sensorPCBMountLeft(1)+[-5,0,0])sphere(joint_radius);}
+            hull(){move(sensorPCBMountLeft(1)+[-5,0,0])sphere(joint_radius);thumbPaddleSupportFront();}
+            hull(){move(sensorPCBMountLeft(1))sphere(joint_radius); move(sensorPCBMountRight(3))sphere(joint_radius);}
+        }
+        cutSkateHoles();
+    }
 
     difference(){
       union(){
@@ -343,40 +392,47 @@ module SupportJointSensorMount () {
     }
  }
 
+module feet (d=7) {cyl(d=d,rounding=.2,1);}
+
 module SupportJointGround () {
+    difference(){
+        union(){
+            hull(){move(thumb_skate)sphere(joint_radius); move(palm_skate)sphere(joint_radius);}   
+            hull(){move(thumb_skate)sphere(joint_radius); move(indthumb_skate)sphere(joint_radius);}   
+            hull(){move(index_stake)sphere(joint_radius); move(indthumb_skate)sphere(joint_radius);}   
+            hull(){move(index_stake)sphere(joint_radius); move(middle_skate)sphere(joint_radius);}
+            hull(){move(ring_skate([0,0,joint_radius+.5]))sphere(joint_radius); move(middle_skate)sphere(joint_radius);}
+            hull(){move(pinky_skate([-1,-1,joint_radius+.5]))sphere(joint_radius); move(palm_skate)sphere(joint_radius);}
+            hull(){move(ring_skate([0,0,joint_radius+.5]))sphere(joint_radius); move(pinky_skate([-1,-1,joint_radius+.5]))sphere(joint_radius);}
 
-  hull(){move(thumb_skate)sphere(joint_radius); move(palm_skate)sphere(joint_radius);}   
-  hull(){move(thumb_skate)sphere(joint_radius); move(indthumb_skate)sphere(joint_radius);}   
-  hull(){move(index_stake)sphere(joint_radius); move(indthumb_skate)sphere(joint_radius);}   
-  hull(){move(index_stake)sphere(joint_radius); move(middle_skate)sphere(joint_radius);}    
-  hull(){move(ring_skate([0,0,joint_radius+.5]))sphere(joint_radius); move(middle_skate)sphere(joint_radius);}   
-  hull(){move(pinky_skate([-1,-1,joint_radius+.5]))sphere(joint_radius); move(palm_skate)sphere(joint_radius);}   
-  hull(){move(ring_skate([0,0,joint_radius+.5]))sphere(joint_radius); move(pinky_skate([-1,-1,joint_radius+.5]))sphere(joint_radius);}   
+            adjust = -.125;
+            h1 = joint_radius+.5-.375+ adjust;
+            h2 = joint_radius/2+.25-.5; 
+            
 
-   adjust = -.125;
-   h1 = joint_radius+.5-.375+ adjust;
-   h2 = joint_radius/2+.25-.5; 
-   module feet (d=7) {cyl(d=d,rounding=.2,1);}
-   
-   down(h1){
-     move(thumb_skate)feet(7.5);
-     move(index_stake)feet(7.5);
-     move(middle_skate)feet(7.5);
-     move(ring_skate([0,0,joint_radius+.5]))feet(7.5);
-     move(palm_skate)feet(7.5);
-     move(indthumb_skate)feet(7.5);
-     move(pinky_skate([-.0,-.0,joint_radius+.5]))feet(7.5);
-   }
+            down(h1){
+                move(thumb_skate)feet(7.5);
+                move(index_stake)feet(7.5);
+                move(middle_skate)feet(7.5);
+                move(ring_skate([0,0,joint_radius+.5]))feet(7.5);
+                move(palm_skate)feet(7.5);
+                move(indthumb_skate)feet(7.5);
+                move(pinky_skate([-.0,-.0,joint_radius+.5]))feet(7.5);
+            }
 
-   down(h2){
-     move(thumb_skate)cyl(d=joint_radius*2, rounding1=-.5, joint_radius+.5-1);
-     move(index_stake)cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
-     move(middle_skate)cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
-     move(ring_skate([0,0,joint_radius+.5]))cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
-     move(palm_skate)cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
-     move(indthumb_skate)cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
-     move(pinky_skate([-.0,-.0,joint_radius+.5]))cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
-   }
+            down(h2){
+                move(thumb_skate)cyl(d=joint_radius*2, rounding1=-.5, joint_radius+.5-1);
+                move(index_stake)cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
+                move(middle_skate)cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
+                move(ring_skate([0,0,joint_radius+.5]))cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
+                move(palm_skate)cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
+                move(indthumb_skate)cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
+                move(pinky_skate([-.0,-.0,joint_radius+.5]))cyl(d=joint_radius*2,rounding1=-.5,joint_radius+.5-1);
+            }
+        }
+        
+        cutSkateHoles();
+    }
 }
 
 module SupportJointIndexPaddle () {
@@ -416,11 +472,16 @@ module SupportJointIndexPaddle () {
 }
 
 module SupportJointRingPinky () {
-  hull(){pinkyPaddleSupportBottom();move(ring_skate([0,0,joint_radius+.5]))sphere(joint_radius);}
-  hull(){ringPaddleSupportTop();pinkyPaddleSupportTop();}   
+    difference(){
+        union(){
+            hull(){pinkyPaddleSupportBottom();move(ring_skate([0,0,joint_radius+.5]))sphere(joint_radius);}
+            hull(){ringPaddleSupportTop();pinkyPaddleSupportTop();}   
 
-  hull(){ringPaddleSupportFront(); move(middle_skate)sphere(joint_radius);}
-  hull(){pinkyPaddleSupportTop();move(palm_skate)sphere(joint_radius);}   
+            hull(){ringPaddleSupportFront(); move(middle_skate)sphere(joint_radius);}
+            hull(){pinkyPaddleSupportTop();move(palm_skate)sphere(joint_radius);}   
+        }
+        cutSkateHoles();
+    }
 }
 
 

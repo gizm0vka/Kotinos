@@ -1,4 +1,5 @@
 include <BOSL2/std.scad>
+include <WheelHolder.scad>
 
 /// HSK PCB 
   module hsk_main (){ 
@@ -28,6 +29,7 @@ include <BOSL2/std.scad>
   
   // INDEX 
   module hsk_index (){ 
+      wheelHolder(mp1 = [8.5, (20-2.5)/2, 1], mp2 = [8, -(20-2.5)/2, 1], md=(1.2*2+1), hd=1.6, mh=1, whp=[6, -0.5, 5], wh_d=6.5, wh_hd=4, wh_h=2);
     difference(){
       color("purple")down(.5)linear_extrude(1){
         rect([24, 23]);
@@ -150,3 +152,6 @@ include <BOSL2/std.scad>
     //button
 //    color("teal")up(6.4)left(-5)cube([4,29,4.7],center=true);
 } 
+
+//hsk_index();
+//hsk_thumb_PCB();
