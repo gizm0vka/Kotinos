@@ -109,9 +109,9 @@ function sensorPCBMountLeft (h=0) = move(sensor_origin, p= zrot(sensor_angle, p=
 
  module thumbPCBMount () { 
      {
-    move([6.35,-4.75,4.0])prismoid(size1=[2,3], size2=[2,3], shift=[0,0], h=1.75);
+    move([6.35 +.5,-4.75,4.0])prismoid(size1=[2,3], size2=[2,3], shift=[0,0], h=1.75);
 //    #move([6.35,-4.75,5.75])prismoid(size1=[2,3], size2=[1,3], shift=[.5,0], h=1.2);
-    move([3.75,5.25,4.0 -0.1 -0.15])prismoid(size1=[2,3], size2=[2,3], shift=[0,0], h=1.0); 
+    move([3.75 +.5,5.25,4.0 -0.1 -0.3])prismoid(size1=[2,3], size2=[2,3], shift=[0,0], h=1.0); 
     
     move([-5.25,-7.25+2.25,3.25])cube([2,4,7.5],center=true);
          
@@ -130,7 +130,7 @@ function sensorPCBMountLeft (h=0) = move(sensor_origin, p= zrot(sensor_angle, p=
       move([6.75,.25,4.0]){ 
         color("yellow")left(4.125)up(.5)prismoid(size1=[10.75,1], size2=[1.75,1], shift=[-4.5,0], h=.75);
         left(3.5)down(2.0)prismoid(size1=[9.75,3.0], size2=[9.75,1.0], shift=[0,0], h=2.5+0.0); 
-        left(3.5-1)down(3.5)prismoid(size1=[9.75-2,3], size2=[9.75-2,3], shift=[0,0], h=1.5); 
+        left(3.5-1-1.5)down(3.5)prismoid(size1=[9.75-2-1-2,3], size2=[9.75-2-1-2,3], shift=[0,0], h=1.5); 
         
         color("red")left(8.5)back(-1.75)down(-.5)prismoid(size1=[2.,4.5], size2=[2.,4.5], shift=[0,-0], h=1); 
         color("blue")left(8.5)down(2)prismoid(size1=[2,3.], size2=[2,1], shift=[0,0], h=2.5); 
