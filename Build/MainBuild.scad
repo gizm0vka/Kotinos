@@ -15,11 +15,11 @@ include <DataIndexPaddle.scad>
 // hand orientation and placement 
 wrist_tent = 21; //angle wrist pronation  
 wrist_tilt = 23; //angle wrist flexion 
-wrist_height =15.0; // wrist height 
+wrist_height =16.0; // wrist height 
 hand_origin = mean([PinkieBlobVec (res*.5, 0, NeutralHandFlexion),PinkieBlobVec (res*.5, 180, NeutralHandFlexion, buffer=0)]); //define origin ulna joint (or there-about)
 
 //Sensor PCB placement 
-sensor_origin= [-48, 90, 6.5]; //mm
+sensor_origin= [-44, 68, 6.5]; //mm
 sensor_angle= 4; //in deg
 
 //index PCB placement
@@ -27,6 +27,7 @@ index_origin = [11,-12.25,-11.75]; //mm
 index_angle = [37,3,7.0]; //deg
 index_adjust = [0,0,-3]; //height adjustment in mm
 module indexOrigin (shift=[0,0,0]) {rot(index_angle)move(index_origin+shift)children();}
+
 //thumb PCB placement 
 module thumbButtonUpper () {xrot(19)zrot(2)down(15.5)back(-8)left(-4.)children();} //thumb bottoms for upper placement 
 module thumbButtonLower () {yrot(35)xrot(15)zrot(2)down(17.)back(-8)left(-.75)zrot(190)children();} //thumb bottom for lower placement 
@@ -50,14 +51,14 @@ module pinkyPaddleSupportBack ()   PaddleMountPlacer(0.4, 0.95, 1.75, pnk, dis, 
 module pinkyPaddleSupportBottom () PaddleMountPlacer(.98, 0.05, 2.75, pnk, dis, PinkyPatch)sphere(joint_radius);
 
 //Position of Sensor PCB mount
-module indexPaddleMount ()   indexOrigin(index_adjust+[0,0,-2.5])move([-15.5,-20 -0.5,10.6])sphere(joint_radius);
-module middlePaddleMount ()     indexOrigin(index_adjust+[0,0,-4.5])move([13.5,-20 -0.5,10.])sphere(joint_radius);
+module indexPaddleMount ()   indexOrigin(index_adjust+[0,0,-2.5])move([-15.5,-20,10.6])sphere(joint_radius);
+module middlePaddleMount ()     indexOrigin(index_adjust+[0,0,-4.5])move([13.5,-20,10.])sphere(joint_radius);
 
 // skate placement (mm)
 thumb_skate  = [-72,49,joint_radius+.5];
-indthumb_skate  = [-82 -28,78,joint_radius+.5];
-index_stake = [-72, 99 +33, joint_radius+.5];
-middle_skate = [-45,107 +33,joint_radius+.5];
+indthumb_skate  = [-82,78,joint_radius+.5];
+index_stake = [-72,99,joint_radius+.5];
+middle_skate = [-45,107,joint_radius+.5];
 palm_skate = [-(72-7.2)/2,50,joint_radius+.5];
 
 vector_to_ring_tip = let(i=rng)PlaceOnVec(finger=i, phalange = dis, A_hand= NeutralHandFlexion, vec = [-5,-5,-Finger_diam[i][dis]*2-.2]);
@@ -72,20 +73,20 @@ $fn= $preview ? 5 : 32; //number of segments on curves, set lower for faster ren
 
 BuildSupport();
 BuildThumb(cut= ($preview ? false : true));
-%BuildRing(cut= ($preview ? false : true));
-%BuildPinky(cut= ($preview ? false : true));
+BuildRing(cut= ($preview ? false : true));
+BuildPinky(cut= ($preview ? false : true));
 //%HSK_PCBS();
 %BuildIndexPaddles();
 //%back(23)down(0)right(1)mouseOrigin()color("gold", alpha=.5)let(A_hand = GripHandFlexion)HandsOn(meat= true, A_hand); //hand reference at flexed position 
 //%mouseOrigin()let(A_hand = NeutralHandFlexion)HandsOn(meat= true, A_hand = A_hand); //hand reference at neutral 
 
 module BuildSupport () {
-//   color("blue", alpha=1)SupportJointThumb();
-//   color("teal", alpha=1)SupportJointIndexPCB();
-//   color("red", alpha=1)SupportJointIndexPaddle();
-//   color("snow", alpha=1)SupportJointSensorMount();
-//   color("gold", alpha=.5)SupportJointGround();
-//   color("Green", alpha=1)SupportJointRingPinky();
+   color("blue", alpha=1)SupportJointThumb();
+   color("teal", alpha=1)SupportJointIndexPCB();
+   color("red", alpha=1)SupportJointIndexPaddle();
+   color("snow", alpha=1)SupportJointSensorMount();
+   color("gold", alpha=.5)SupportJointGround();
+   color("Green", alpha=1)SupportJointRingPinky();
 }
 
 /*---------------------------------- Modules --------------------------*/
@@ -276,7 +277,7 @@ module indexPCBMount (quad=0, u=0) {
     if(quad==0)translate([-8,(20-2.5)/2,u])children(); 
     else if(quad==1)translate([ 8,(20-2.5)/2,u])children(); 
     else if(quad==2)translate([-8.5,-(20-2.5)/2,u])children(); 
-    else if(quad==3)translate([ 8.5-0.0,-(20-2.5)/2,u])children(); 
+    else if(quad==3)translate([ 8.5,-(20-2.5)/2,u])children(); 
     else if(quad==4)translate([-11,-0,u])children(); 
     else if(quad==5)translate([ 11, 0,u])children(); 
     else if(quad==6)translate([ 0,-18,u])children(); 
@@ -331,9 +332,8 @@ module SupportJointIndexPCB () {
      
      hull(){mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); move(index_stake)sphere(joint_radius);}
      hull(){mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius); move(ring_skate([0,0,joint_radius+.5]))sphere(joint_radius);}
-     hull()mouseOrigin()v_ind(){indexPCBMount(quad=3, u=-joint_radius)sphere(joint_radius); indexPCBMount(quad=3, u=-joint_radius)fwd(3)sphere(joint_radius);}
-     
-     //hull(){move(thumb_skate)sphere(joint_radius); mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius);}   
+     hull()mouseOrigin()v_ind(){indexPCBMount(quad=3, u=-joint_radius)sphere(joint_radius); indexPCBMount(quad=3, u=-joint_radius)fwd(3)sphere(joint_radius); }
+     hull(){move(thumb_skate)sphere(joint_radius); mouseOrigin()v_ind()indexPCBMount(quad=5, u=-2.5)sphere(joint_radius);}   
 
 
 //     #hull(){mouseOrigin()v_ind()indexPCBMount(quad=1, u=-joint_radius-3)sphere(joint_radius); move(index_stake)sphere(joint_radius);}   
@@ -440,7 +440,6 @@ module SupportJointIndexPaddle () {
     union(){
       mouseOrigin()v_ind()hull(){indexPaddleMount();middlePaddleMount();}
       hull()mouseOrigin()v_ind(){middlePaddleMount(); indexPCBMount(quad=3, u=-joint_radius)fwd(3)sphere(joint_radius); }
-      hull()mouseOrigin()v_ind(){middlePaddleMount(); indexPCBMount(quad=2, u=-joint_radius)fwd(3)sphere(joint_radius); }
 
       hull(){mouseOrigin()v_ind()indexPaddleMount();thumbPaddleSupportTop();}
       hull(){mouseOrigin()v_ind()indexPaddleMount();thumbPaddleSupportBack();}
@@ -454,8 +453,8 @@ module SupportJointIndexPaddle () {
       hull(){mouseOrigin()v_ind()middlePaddleMount();ringPaddleSupportFront();}
       hull(){mouseOrigin()v_ind()middlePaddleMount();ringPaddleSupportTop();}
 
-      mouseOrigin()v_ind()indexOrigin([0,0,-5.5])translate([ -15.5,-20 -0.5,11.75])cuboid([6,5.5,2.5],rounding=.5);
-      mouseOrigin()v_ind()indexOrigin([0,0,-7.5])translate([13.5,-20 -0.5,11.75])cuboid([6,5.5,2.5],rounding=.5);
+      mouseOrigin()v_ind()indexOrigin([0,0,-5.5])translate([ -15.5,-20,11.75])cuboid([6,5.5,2.5],rounding=.5);
+      mouseOrigin()v_ind()indexOrigin([0,0,-7.5])translate([13.5,-20,11.75])cuboid([6,5.5,2.5],rounding=.5);
     }
    //cuts
    mouseOrigin()v_ind(){

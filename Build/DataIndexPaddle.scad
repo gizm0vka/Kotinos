@@ -21,8 +21,7 @@ DeepPaddlePatch=[
 //color("gold", alpha=.5)
 //PatchPaddle(ShallowPaddlePatch, debug=false);
 //$fn=32;
-//IndexDeepPaddle(cut = $preview ? false : true);
-//MidPaddle();
+//IndexDeepPaddle();
 
 
 
@@ -49,7 +48,7 @@ module IndexShallowPaddle (shift =[0,0.0,-2]) {
 
 module IndexDeepPaddle (shift =[0,-0.0,-1.5], scaling = [1,1,1], cut = true) {
   difference(){
-    left(14)up(13.25 +0.5)fwd(3)move(shift)scale(scaling)PatchPaddle(DeepPaddlePatch, debug=false, thick=1.5+0.5); //mid 
+    left(14)up(13.25)fwd(3)move(shift)scale(scaling)PatchPaddle(DeepPaddlePatch, debug=false); //mid 
     if (true == cut)  
         move([-8.5,-1.5,10])cuboid([7,15,5],rounding=1); 
   }
@@ -57,7 +56,7 @@ module IndexDeepPaddle (shift =[0,-0.0,-1.5], scaling = [1,1,1], cut = true) {
   
   move([-15.5,-6.5,11.6]){
       up(+shift[2]){
-        fwd(2)xrot(90)prismoid(size1 =[4,1+0.6], size2= [4,1],shift=[0,-.5], h=8, rounding1=.5, rounding2= .1);
+        fwd(2)xrot(90)prismoid(size1 =[4,1], size2= [4,1],shift=[0,-.5], h=8, rounding1=.5, rounding2= .1);
       }
       up(shift[2])down(.5)PaddleMount();
    }
@@ -66,7 +65,7 @@ module IndexDeepPaddle (shift =[0,-0.0,-1.5], scaling = [1,1,1], cut = true) {
 module MidPaddle (rend=false, scaling = [1,1.0,1],shift =[0,-0.5,-2.5]) {
   
   if(rend==true)left(14)up(13.25)move(shift)scale(scaling)import("\\husk\\mid_paddle2.stl"); //mid 
-  else left(14)up(13.25 +0.5)move(shift)scale(scaling)PatchPaddle(DeepPaddlePatch, debug=false, thick=1.5+0.5); //mid 
+  else left(14)up(13.25)move(shift)scale(scaling)PatchPaddle(DeepPaddlePatch, debug=false); //mid 
 //  left(14)up(13.25)move(shift)scale(scaling)PatchPaddle(DeepPaddlePatch, debug=true); //mid 
 //  #xflip()import("\\husk\\husk_mid.stl"); //mid 
   
@@ -75,9 +74,9 @@ module MidPaddle (rend=false, scaling = [1,1.0,1],shift =[0,-0.5,-2.5]) {
   
   move([-15.5,-6.5,11.6]){
       up(shift[2]){
-        xrot(90)prismoid(size1 =[5,1 +0.6], size2= [4,1 +0.6], h=2, rounding=.5);
-        zrot(180)xrot(90)prismoid(size1 =[5,1 +0.6], size2= [6,.25],shift=[0,.75], h=2, rounding1=.5);      
-        fwd(2)xrot(90)prismoid(size1 =[4,1 +0.6], size2= [4,1],shift=[0,-1.0], h=8, rounding1=.5, rounding2= .1);
+        xrot(90)prismoid(size1 =[5,1], size2= [4,1], h=2, rounding=.5);
+        zrot(180)xrot(90)prismoid(size1 =[5,1], size2= [6,.25],shift=[0,.75], h=2, rounding1=.5);      
+        fwd(2)xrot(90)prismoid(size1 =[4,1], size2= [4,1],shift=[0,-1.0], h=8, rounding1=.5, rounding2= .1);
       }
       up(shift[2]-1)PaddleMount();    
    }
